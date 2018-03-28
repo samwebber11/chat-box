@@ -46,16 +46,26 @@ io.on('connection',(socket)=>
 {
 	console.log('New User Generated');
 	socket.emit('newMsg',{
-		from:'samjain15291@gmail.com',
-		text:'Hello World',
+		from:'Admin',
+		text:'Welcome to the chat group',
 		createdAt:123
 	});
 
+       	socket.broadcast.emit('newMsg',{
+		from:'Admin',
+    	text:'A new member added',
+    	createdAt: new Date().getTime()    		
+    	});
 	socket.on('createMsg',(msg)=>
 	{
-		console.log('New Msg recieved');
-		console.log(msg);
-	})
+		console.log('New Msg recieved',msg);
+		io.emit('newMsg',{
+			from:msg.from,
+			text:msg.text,
+			createdAt:new Date().getTime()
+		}
+		);
+	});
 
 	socket.on('disconnect',()=>
 	{

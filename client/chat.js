@@ -8,6 +8,11 @@ socket.on('connect',()=>
 		from:'Server',
 		text:'New Update'
 	});
+
+	// socket.emit('newMessage',{
+	// 	from:'Admin',
+	// 	text:'Welcome to the group'
+	// });
 });
 
 socket.on('disconnect',()=>
