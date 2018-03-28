@@ -18,5 +18,19 @@
 </head>
 <body>
 	<p id="one">WELCOME TO MY CHAT APP</p>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket=io();
+
+		socket.on('connect',()=>
+		{
+			console.log('connect');
+		});
+
+		socket.on('disconnect',()=>
+		{
+			console.log('disconnected');
+		});
+	</script>
 </body>
 </html>
