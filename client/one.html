@@ -25,11 +25,23 @@
 		socket.on('connect',()=>
 		{
 			console.log('connect');
+
+			socket.emit('createEmail',{
+				from:'Server',
+				text:'This is regarding our new update'	
 		});
+			
+		});
+
+		
 
 		socket.on('disconnect',()=>
 		{
 			console.log('disconnected');
+		});
+		socket.on('newEmail',(email)=>{
+			console.log('New Email AHHHHH!!!!');
+			console.log(email); 
 		});
 	</script>
 </body>

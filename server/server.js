@@ -18,14 +18,52 @@ app.use(express.static(finalPath));
 // 	res.sendFile(`finalPath + 'one.html'`);
 // })
 
+// io.on('connection',(socket)=>
+// {
+// 	console.log('New User generated');
+
+// 	socket.emit('newEmail',
+// 	{
+// 		from:'samjain15291@gmail.com',
+// 		text:'Hello World',
+// 		createdAt:124
+// 	});
+
+// 	socket.on('createEmail',(email)=>
+// 	{
+// 		console.log('New Email is created');
+// 		console.log(email);
+// 	});
+
+// 		socket.on('disconnect',()=>
+// 	{
+// 		console.log('Disconnected');
+// 	});
+
+// });
+
 io.on('connection',(socket)=>
 {
-	console.log('New User generated');
+	console.log('New User Generated');
+	socket.emit('newMsg',{
+		from:'samjain15291@gmail.com',
+		text:'Hello World',
+		createdAt:123
+	});
+
+	socket.on('createMsg',(msg)=>
+	{
+		console.log('New Msg recieved');
+		console.log(msg);
+	})
+
 	socket.on('disconnect',()=>
 	{
-		console.log('Disconnected');
+		console.log('Disconnecting from the server');
 	});
-});
+
+
+})
 
 server.listen(port,()=>
 {
