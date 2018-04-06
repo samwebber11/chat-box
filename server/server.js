@@ -56,15 +56,16 @@ io.on('connection',(socket)=>
     	text:'A new member added',
     	createdAt: new Date().getTime()    		
     	});
-	socket.on('createMsg',(msg)=>
+	socket.on('createMsg',(msg,callback)=>
 	{
 		console.log('New Msg recieved',msg);
 		io.emit('newMsg',{
 			from:msg.from,
 			text:msg.text,
 			createdAt:new Date().getTime()
-		}
-		);
+		});
+		return callback(null,'This is from the server');
+		
 	});
 
 	socket.on('disconnect',()=>
