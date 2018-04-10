@@ -10,29 +10,31 @@ socket.on('connect',()=>
 	// });
 });
 
-socket.emit('createMsg',{
-		from:'Server',
-		text:'New Update'
-	},function (err,data)
-	{
-		if(err)
-		{
-			console.log('Error!!UGH');
-		}
-		else
-		{
-		console.log('Got it',data);
-		}
-	});
+// socket.emit('createMsg',{
+// 		from:'Server',
+// 		text:'New Update'
+// 	},function (err,data)
+// 	{
+// 		if(err)
+// 		{
+// 			console.log('Error!!UGH');
+// 		}
+// 		else
+// 		{
+// 		console.log('Got it',data);
+// 		}
+// 	});
 
 jQuery('#message').on('submit',function(e)
 {
 	e.preventDefault();
-
+	var chatt=jQuery('[name=message-grp');
 	socket.emit('createMsg',{
 		from:'User',
-		text:jQuery('[name=message-grp]').val()
-	},function(){});
+		text:chatt.val()
+	},function(){
+		chatt.val('');
+	});
 });
 
 socket.on('disconnect',()=>
@@ -50,3 +52,30 @@ socket.on('newMsg',(msg)=>
 
 	jQuery('#messages').append(li);
 });
+
+var message1=jQuery('#btn2');
+message1.on('click',function(position){
+if(!navigator.geolocation)
+{
+	return alert('Browser not supported');
+}
+
+message1.attr('disabled','disabled').text('Sending Location...');
+	navigator.geolocation.getCurrentPosition(function(position)
+	{
+		message1.removeAttr('disabled').text('Send Location');
+		socket.emit('locateMe',{
+			latitude:position.coords.latitude,
+			longitude:position.coords.longitude
+		});
+	},function()
+	{
+		message1.removeAttr('disabled').text('Send Location');
+		alert('Unable to fetch the position');
+	});
+
+
+});
+
+
+

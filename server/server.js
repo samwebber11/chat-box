@@ -8,7 +8,7 @@ var port=process.env.PORT||3000;
 var app=express();
 var server=http.createServer(app);
 var io=socketIO(server);
-
+// var generator=require('./message.js');
 // app.set('view engine','html');
 // app.engine('html',require('hbs').__express);
 // console.log(port);
@@ -68,13 +68,26 @@ io.on('connection',(socket)=>
 		
 	});
 
+	socket.on('locateMe',(coords)=>
+	{
+		console.log(coords);
+		socket.broadcast.emit('newMsg',
+		{
+			from:'Admin',
+			text:[
+			latitude=coords.latitude,
+			longitude=coords.longitude
+			]
+		});
+	});
+
 	socket.on('disconnect',()=>
 	{
 		console.log('Disconnecting from the server');
 	});
 
 
-})
+});
 
 server.listen(port,()=>
 {
