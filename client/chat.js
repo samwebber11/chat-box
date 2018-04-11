@@ -47,11 +47,33 @@ socket.on('newMsg',(msg)=>
 	console.log('New Msg Arrived');
 	console.log(msg);
 
-	var li=jQuery('<li></li>');
-	li.text(`${msg.from}:${msg.text}`);
+    var time=moment(msg.createdAt).format('h:mm a');
+    var template=jQuery('#message-template').html();
+    var html=Mustache.render(template,{
+    	text:msg.text,
+    	from:msg.from,
+    	createdAt:time
+    });
 
-	jQuery('#messages').append(li);
+	// var li=jQuery('<li></li>');
+	// li.text(`${msg.from} ${time}:${msg.text}`);
+
+	jQuery('#messages').append(html);
 });
+
+
+// socket.on('newLoc',(msg)=>
+// {
+// 	var time=msg.createdAt;
+// 	var time=moment(msg.createdAt).format('h:mm a');
+// 	var template=jQuery('#message-location').html();
+// 	var html=Mustache.render(template,{
+// 		from:msg.from,
+// 		url:msg.url,
+// 		createdAt:time
+// 	});
+// });
+
 
 var message1=jQuery('#btn2');
 message1.on('click',function(position){

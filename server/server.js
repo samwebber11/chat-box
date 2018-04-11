@@ -4,6 +4,7 @@ const http=require('http');
 const socketIO=require('socket.io');
 const finalPath=path.join(__dirname , '../client');
 console.log(finalPath);
+const moment=require('moment');
 var port=process.env.PORT||3000;
 var app=express();
 var server=http.createServer(app);
@@ -12,6 +13,7 @@ var io=socketIO(server);
 // app.set('view engine','html');
 // app.engine('html',require('hbs').__express);
 // console.log(port);
+var date=moment();
 app.use(express.static(finalPath));
 // app.get('/',(res,req)=>
 // {
@@ -48,13 +50,13 @@ io.on('connection',(socket)=>
 	socket.emit('newMsg',{
 		from:'Admin',
 		text:'Welcome to the chat group',
-		createdAt:123
+		createdAt: moment().valueOf()
 	});
 
        	socket.broadcast.emit('newMsg',{
 		from:'Admin',
     	text:'A new member added',
-    	createdAt: new Date().getTime()    		
+    	createdAt: moment().valueOf()   		
     	});
 	socket.on('createMsg',(msg,callback)=>
 	{
@@ -62,11 +64,21 @@ io.on('connection',(socket)=>
 		io.emit('newMsg',{
 			from:msg.from,
 			text:msg.text,
-			createdAt:new Date().getTime()
+			createdAt:moment().valueOf()
 		});
 		return callback(null,'This is from the server');
 		
 	});
+	// socket.on('locateMe',(coords)=>
+	// {
+	// 	console.log(coords);
+	// 	socket.broadcast.emit('newLoc'),
+	// 	{
+	// 		from:'Admin',
+	// 		url:'https://www.google.com/maps?@${coords.latitude},${coords.longitude}',
+	// 		createdAt:moment().valueOf()
+	// 	};
+	// });
 
 	socket.on('locateMe',(coords)=>
 	{
