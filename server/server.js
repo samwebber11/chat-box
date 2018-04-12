@@ -4,6 +4,7 @@ const http=require('http');
 const socketIO=require('socket.io');
 const finalPath=path.join(__dirname , '../client');
 console.log(finalPath);
+const {check}=require('./checker.js');
 const moment=require('moment');
 var port=process.env.PORT||3000;
 var app=express();
@@ -68,6 +69,15 @@ io.on('connection',(socket)=>
 		});
 		return callback(null,'This is from the server');
 		
+	});
+
+	socket.on('join',(param,callback)=>
+	{
+		if(!check(param.name) || !check(param.room))
+		{
+			return callback('Name and room are not available');
+		}
+		return callback();
 	});
 	// socket.on('locateMe',(coords)=>
 	// {

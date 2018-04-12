@@ -4,11 +4,41 @@ socket.on('connect',()=>
 {
 	console.log('Connected to Chat App');
 
+	var param=jQuery.deparam(window.location.search);
+	socket.emit('join',param,function(err)
+		{
+			if(err)
+			{
+				alert(err);
+				window.location.href='/';
+			}
+			else
+			{
+				console.log('No error');
+			}
+		});
+
 	// socket.emit('newMessage',{
 	// 	from:'Admin',
 	// 	text:'Welcome to the group'
 	// });
 });
+function scrollToBottom()
+{
+	var message2=jQuery('#messages');
+	var child=message2.children('li:last-child');
+
+	var client=message2.prop('clientHeight');
+	var scroll=message2.prop('scrollHeight');
+	var top=message2.prop('scrollTop');
+	var msg=child.innerHeight();
+	var last=child.prev().innerHeight();
+
+	if(client+top+msg+last>=scroll)
+	{
+		message2.scrollTop(scroll);
+	}
+}
 
 // socket.emit('createMsg',{
 // 		from:'Server',
@@ -59,6 +89,7 @@ socket.on('newMsg',(msg)=>
 	// li.text(`${msg.from} ${time}:${msg.text}`);
 
 	jQuery('#messages').append(html);
+	scrollToBottom();
 });
 
 
