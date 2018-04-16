@@ -47,18 +47,6 @@ app.use(express.static(finalPath));
 
 io.on('connection',(socket)=>
 {
-	console.log('New User Generated');
-	socket.emit('newMsg',{
-		from:'Admin',
-		text:'Welcome to the chat group',
-		createdAt: moment().valueOf()
-	});
-
-       	socket.broadcast.emit('newMsg',{
-		from:'Admin',
-    	text:'A new member added',
-    	createdAt: moment().valueOf()   		
-    	});
 	socket.on('createMsg',(msg,callback)=>
 	{
 		console.log('New Msg recieved',msg);
@@ -77,6 +65,18 @@ io.on('connection',(socket)=>
 		{
 			return callback('Name and room are not available');
 		}
+		socket.join(param.room);
+		socket.emit('newMsg',{
+		from:'Admin',
+		text:'Welcome to the chat group',
+		createdAt: moment().valueOf()
+	});
+
+       	socket.broadcast.to(param.room).emit('newMsg',{
+		from:'Admin',
+    	text:`${param.name} has joined`,
+    	createdAt: moment().valueOf()   		
+    	});
 		return callback();
 	});
 	// socket.on('locateMe',(coords)=>
